@@ -1,0 +1,84 @@
+CREATE TABLE "public".students(
+  student_no VARCHAR PRIMARY KEY NOT NULL,
+  student_name VARCHAR NOT NULL,
+  degree_id INTEGER NOT NULL,
+  specialization_id INTEGER,
+  email VARCHAR,
+  faculty INTEGER,
+  department_id INTEGER,
+  image VARCHAR NOT NULL,
+  starting_yr INTEGER NOT NULL
+)
+
+
+CREATE TABLE "public".lecture(
+  degree INTEGER NOT NULL,
+  subject VARCHAR NOT NULL,
+  day VARCHAR NOT NULL,
+  time_slot VARCHAR,
+  lecture_hall VARCHAR,
+  lecture_id INTEGER
+)
+
+CREATE TABLE "public".specializations(
+  id INTEGER PRIMARY KEY NOT NULL,
+  specialization_name VARCHAR NOT NULL,
+  degree INTEGER NOT NULL,
+  department INTEGER NOT NULL
+)
+
+CREATE TABLE "public".degree_programs(
+  degree_id INTEGER PRIMARY KEY NOT NULL,
+  degree_name VARCHAR NOT NULL
+)
+
+CREATE TABLE "public".lecture_hall(
+  hall_id INTEGER PRIMARY KEY NOT NULL,
+  faculty INTEGER NOT NULL,
+  floor_no INTEGER
+)
+
+CREATE TABLE "public".subjects(
+  subject_code VARCHAR PRIMARY KEY NOT NULL,
+  subject_name VARCHAR,
+  degree INTEGER NOT NULL,
+  year INTEGER
+)
+
+CREATE TABLE "public".lecturer(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name VARCHAR NOT NULL,
+  email VARCHAR,
+  department INTEGER NOT NULL
+)
+
+CREATE TABLE "public".departments(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name VARCHAR NOT NULL,
+  department_head INTEGER
+)
+
+CREATE TABLE "public".degree_programs_offers (
+  department_id INTEGER NOT NULL,
+  degree_id INTEGER NOT NULL,
+  PRIMARY KEY (department_id, degree_id)
+);
+
+CREATE TABLE "public".faculty(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name VARCHAR NOT NULL
+)
+
+CREATE TABLE "public".lecturer_teaching_subjects(
+  lecture_id INTEGER NOT NULL,
+  subject VARCHAR NOT NULL,
+  PRIMARY KEY (lecture_id, subject)
+)
+
+# list all tables
+
+SELECT table_schema, table_name
+FROM information_schema.tables
+WHERE table_schema NOT IN ('information_schema', 'pg_catalog')
+AND table_type = 'BASE TABLE'
+ORDER BY table_schema, table_name;
