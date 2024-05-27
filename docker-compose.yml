@@ -13,5 +13,7 @@ services:
       - DB_PASS=${DB_PASS}
       - DB_NAME=${DB_NAME}
       - PRIVATE_IP=${PRIVATE_IP}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
     volumes:
       - .:/app
+      - ./keys:/appp/keys
