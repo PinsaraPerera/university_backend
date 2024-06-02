@@ -58,5 +58,5 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --memory 512Mi \
-            --port 8000 \
+            --port 80 \
             --set-env-vars PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},REGION=${{ secrets.GCP_REGION }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
