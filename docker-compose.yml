@@ -16,4 +16,4 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
     volumes:
       - .:/app
-      - ./keys:/appp/keys
+      - ./keys:/app/keys

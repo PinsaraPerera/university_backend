@@ -1,0 +1,62 @@
+name: fastAPI-backend
+
+on:
+  push:
+    branches:
+      - main # Trigger deployment on push to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Decode and save service account key
+        run: |
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode > $HOME/gcloud-service-key.json
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: "latest"
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Authenticate with gcloud
+        run: |
+          gcloud auth activate-service-account --key-file=$HOME/gcloud-service-key.json
+
+      - name: Authenticate Docker
+        run: |
+          gcloud auth configure-docker
+
+      # Create .env file with environment variables
+      - name: Create .env file
+        run: |
+          echo PROJECT_ID=${{ secrets.GCP_PROJECT_ID }} >> .env
+          echo REGION=${{ secrets.GCP_REGION }} >> .env
+          echo INSTANCE_NAME=${{ secrets.INSTANCE_NAME }} >> .env
+          echo INSTANCE_CONNECTION_NAME=${{ secrets.GCP_PROJECT_ID }}:${{ secrets.GCP_REGION }}:${{ secrets.INSTANCE_NAME }} >> .env
+          echo DB_USER=${{ secrets.DB_USER }} >> .env
+          echo DB_PASS=${{ secrets.DB_PASS }} >> .env
+          echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+          echo PRIVATE_IP=  >> .env
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapi-backend:$GITHUB_SHA
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+      - name: Deploy to Cloud Run
+        run: |
+          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapi-backend:$GITHUB_SHA
+          gcloud run deploy fastapi-backend \
+            --image $IMAGE \
+            --region ${{ secrets.GCP_REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --memory 512Mi \
+            --port 8000 \
+            --set-env-vars PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},REGION=${{ secrets.GCP_REGION }},INSTANCE_CONNECTION_NAME=${{ secrets.INSTANCE_CONNECTION_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json

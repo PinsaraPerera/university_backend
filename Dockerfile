@@ -22,8 +22,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the project files to the working directory
 COPY . .
 
+# Copy the service account key into the container
+COPY gcloud-service-key.json /app/keys/service_account.json
+
 # Expose the port that the app runs on
 EXPOSE 8000
 
 # Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
