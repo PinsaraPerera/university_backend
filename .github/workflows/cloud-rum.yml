@@ -15,7 +15,7 @@ jobs:
 
       - name: Decode and save service account key
         run: |
-          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode > $HOME/gcloud-service-key.json
+          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} > $HOME/gcloud-service-key.json
         shell: bash
 
       - name: Set up Cloud SDK
