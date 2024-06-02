@@ -35,55 +35,55 @@ def add(request: student_schema.Student, db: Session):
 
 
 def remove(student_no: str, db: Session):
-    student = (
+    result = (
         db.query(student.Student)
         .filter(student.Student.student_no == student_no)
         .first()
     )
-    if student is None:
+    if result is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Student with student_no {student_no} not found",
         )
-    db.delete(student)
+    db.delete(result)
     db.commit()
     return "student removed"
 
 
 def update(student_no: str, request: student_schema.Student, db: Session):
 
-    student = (
+    result = (
         db.query(student.Student)
         .filter(student.Student.student_no == student_no)
         .first()
     )
 
-    if student is None:
+    if result is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Student with student_no {student_no} not found",
         )
 
-    student.student_name = request.student_name
-    student.degree_id = request.degree_id
-    student.specialization_id = request.specialization_id
-    student.email = request.email
-    student.faculty = request.faculty
-    student.department_id = request.department_id
-    student.image = request.image
-    student.starting_yr = request.starting_yr
+    result.student_name = request.student_name
+    result.degree_id = request.degree_id
+    result.specialization_id = request.specialization_id
+    result.email = request.email
+    result.faculty = request.faculty
+    result.department_id = request.department_id
+    result.image = request.image
+    result.starting_yr = request.starting_yr
 
     db.commit()
-    db.refresh(student)
+    db.refresh(result)
     return "student updated"
 
 
 def show(student_no: str, db: Session):
-    student = db.query(student.Student).filter(student.Student.student_no == student_no).first()
+    result = db.query(student.Student).filter(student.Student.student_no == student_no).first()
     
-    if student is None:
+    if result is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Student with student_no {student_no} not found",
         )
-    return student
+    return result
