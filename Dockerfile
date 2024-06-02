@@ -5,6 +5,9 @@ FROM python:3.10-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
+# Set the Google application credentials environment variable
+ENV GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
+
 # Create and set the working directory
 WORKDIR /app
 
