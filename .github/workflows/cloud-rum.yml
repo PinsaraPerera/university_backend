@@ -10,23 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Decode and save service account key
-        run: |
-          echo ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} | base64 --decode ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }} > $HOME/gcloud-service-key.json
+        run: echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > ./gcloud-service-key.json
         shell: bash
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      # Authenticate with Google Cloud
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
         with:
-          version: "latest"
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+            credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}"
 
-      - name: Authenticate with gcloud
-        run: |
-          gcloud auth activate-service-account --key-file=$HOME/gcloud-service-key.json
+        # Setup gcloud CLI/SDK
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
 
       - name: Authenticate Docker
         run: |
@@ -60,4 +59,4 @@ jobs:
             --allow-unauthenticated \
             --memory 512Mi \
             --port 8000 \
-            --set-env-vars PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},REGION=${{ secrets.GCP_REGION }},INSTANCE_CONNECTION_NAME=${{ secrets.INSTANCE_CONNECTION_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
+            --set-env-vars PROJECT_ID=${{ secrets.GCP_PROJECT_ID }},REGION=${{ secrets.GCP_REGION }},DB_USER=${{ secrets.DB_USER }},DB_PASS=${{ secrets.DB_PASS }},DB_NAME=${{ secrets.DB_NAME }},GOOGLE_APPLICATION_CREDENTIALS=/app/keys/service_account.json
