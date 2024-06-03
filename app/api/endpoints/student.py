@@ -12,24 +12,24 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[student_schema.Student])
+@router.get("/getAll", response_model=List[student_schema.Student])
 def all(
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return student.get_all(db)
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED)
+@router.post("/create", status_code=status.HTTP_201_CREATED)
 def create(
     request: student_schema.Student,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return student.add(request, db)
 
 
-@router.delete("/{student_no}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/remove/{student_no}", status_code=status.HTTP_204_NO_CONTENT)
 def remove(
     student_no: str,
     db: Session = Depends(get_db),
@@ -38,7 +38,7 @@ def remove(
     return student.remove(student_no, db)
 
 
-@router.put("/{student_no}", status_code=status.HTTP_202_ACCEPTED)
+@router.put("/update/{student_no}", status_code=status.HTTP_202_ACCEPTED)
 def update(
     student_no: str,
     request: student_schema.Student,
@@ -52,6 +52,6 @@ def update(
 def get_student(
     student_no: str,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return student.show(student_no, db)
