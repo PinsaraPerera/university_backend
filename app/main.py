@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.db.base import Base
 from app.db.session import engine
-from app.api.endpoints import admin, student, authentication, faculty, subject
+from app.api.endpoints import admin, student, authentication, faculty, subject, lecture
 
 app = FastAPI()
 
@@ -26,3 +26,4 @@ app.include_router(admin.router)
 app.include_router(student.router)
 app.include_router(faculty.router)
 app.include_router(subject.router)
+app.include_router(lecture.router)
