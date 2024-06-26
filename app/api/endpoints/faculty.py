@@ -38,7 +38,7 @@ def all(
 def remove(
     faculty_id: int,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return faculty.remove(faculty_id, db)
 
@@ -48,6 +48,6 @@ def update(
     faculty_id: int,
     request: faculty_schema.FacultyUpdate,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return faculty.update(faculty_id, request, db)
