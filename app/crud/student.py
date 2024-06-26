@@ -75,7 +75,7 @@ def update(student_no: str, request: student_schema.Student, db: Session):
 
     db.commit()
     db.refresh(result)
-    return "student updated"
+    return result
 
 
 def show(student_no: str, db: Session):

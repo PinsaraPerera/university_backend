@@ -33,7 +33,7 @@ def create(
 def remove(
     student_no: str,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return student.remove(student_no, db)
 
@@ -43,7 +43,7 @@ def update(
     student_no: str,
     request: student_schema.Student,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return student.update(student_no, request, db)
 

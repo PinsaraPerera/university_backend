@@ -31,7 +31,7 @@ def all(db: Session = Depends(get_db)):
 def remove(
     subject_code: str,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return subject.remove(subject_code, db)
 
@@ -41,7 +41,7 @@ def update(
     subject_code: str,
     request: subject_schema.SubjectUpdate,
     db: Session = Depends(get_db),
-    current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
+    # current_user: admin_schema.Admin = Depends(oauth2.get_current_user),
 ):
     return subject.update(subject_code, request, db)
 

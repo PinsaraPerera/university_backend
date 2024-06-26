@@ -9,3 +9,4 @@ class Subject(Base):
     subject_name = Column(String)
     degree = Column(String)
     year = Column(Integer)
+
