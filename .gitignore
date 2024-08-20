@@ -1,7 +1,6 @@
 __pycache__/
 .venv
 .env
-service_account_2.json
-service_account_1.json
+service_account.json
 gcloud-service-key.json
 /__pycache__/

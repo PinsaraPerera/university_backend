@@ -1,4 +1,4 @@
-name: fastAPI-backend
+name: university-backend
 
 on:
   push:
@@ -45,14 +45,14 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapi-backend:$GITHUB_SHA
+          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/university-backend:$GITHUB_SHA
           docker build -t $IMAGE .
           docker push $IMAGE
 
       - name: Deploy to Cloud Run
         run: |
-          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/fastapi-backend:$GITHUB_SHA
-          gcloud run deploy fastapi-backend \
+          IMAGE=gcr.io/${{ secrets.GCP_PROJECT_ID }}/university-backend:$GITHUB_SHA
+          gcloud run deploy university-backend \
             --image $IMAGE \
             --region ${{ secrets.GCP_REGION }} \
             --platform managed \
